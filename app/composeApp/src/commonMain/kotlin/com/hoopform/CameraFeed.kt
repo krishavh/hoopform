@@ -1,14 +1,9 @@
 package com.hoopform
 
-import kotlinx.coroutines.flow.StateFlow
-
-/** A single detected landmark in PIXEL coordinates. */
-data class Landmark(val x: Double, val y: Double)
-
-/** A frame's detection results: skeleton landmarks + ball estimate. */
+/** A frame's detection results: skeleton landmarks + ball estimate (pixels). */
 data class FrameData(
-    val landmarks: List<Landmark>,
-    val ball: Landmark?,
+    val landmarks: List<Pt>,
+    val ball: Pt?,
     val ballVisible: Boolean,
 )
 

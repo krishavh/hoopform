@@ -70,9 +70,9 @@ actual class CameraFeed actual constructor() {
         } catch (_: Exception) { null }
         // LIVE_STREAM delivers via callback; fall back to a synchronous scalar estimate.
         val lms = result?.landmarks()?.firstOrNull()?.map {
-            Landmark(it.x() * bitmap.width.toDouble(), it.y() * bitmap.height.toDouble())
+            Pt(it.x() * bitmap.width.toDouble(), it.y() * bitmap.height.toDouble())
         } ?: emptyList()
-        val ball = ballCentroid(bitmap)?.let { Landmark(it.x.toDouble(), it.y.toDouble()) }
+        val ball = ballCentroid(bitmap)?.let { Pt(it.x.toDouble(), it.y.toDouble()) }
         onFrameCb?.invoke(FrameData(lms, ball, ball != null))
     }
 

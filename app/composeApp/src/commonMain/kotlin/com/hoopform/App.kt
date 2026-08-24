@@ -8,7 +8,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -25,15 +24,13 @@ fun App() {
         var running by remember { mutableStateOf(false) }
         var tip by remember { mutableStateOf("Start the camera and take a shot.") }
         var lastShot by remember { mutableStateOf<ShotMetrics?>(null) }
-        var poseOverlay by remember { mutableStateOf<List<Landmark>?>(null) }
+        var poseOverlay by remember { mutableStateOf<List<Pt>?>(null) }
 
         val feed = remember {
             CameraFeed().also { feed ->
                 feed.start(onFrame = { frame ->
                     poseOverlay = frame.landmarks
-                    analyzer.onFrame(frame.landmarks.map { Landmark(it.x, it.y) },
-                                     frame.ball?.let { Landmark(it.x, it.y) },
-                                     frame.ballVisible)?.let { m ->
+                    analyzer.onFrame(frame.landmarks, frame.ball, frame.ballVisible)?.let { m ->
                         lastShot = m
                         decideTip(m)?.let { msg -> tip = msg; scope.launch { speaker.speak(msg) } }
                     }
@@ -57,9 +54,11 @@ fun App() {
                 poseOverlay?.let { lms ->
                     Canvas(Modifier.fillMaxSize()) {
                         val w = size.width; val h = size.height
-                        val stroke = androidx.compose.ui.graphics.Paint().apply { color = Color(0xFF0EA5A0); strokeWidth = 4f }
-                        lms.forEachIndexed { i, p ->
-                            if (i == 0) path.moveTo(p.x * w, p.y * h) else path.lineTo(p.x * w, p.y * h)
+                        // draw each landmark as a small teal dot
+                        lms.forEach { p ->
+                            drawCircle(Color(0xFF0EA5A0), radius = 5f,
+                                       center = androidx.compose.ui.geometry.Offset(
+                                           p.x.toFloat() * w, p.y.toFloat() * h))
                         }
                     }
                 } ?: Text("Camera starting…", color = Color.White)
