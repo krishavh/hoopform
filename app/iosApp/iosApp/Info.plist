@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>NSCameraUsageDescription</key>
+	<string>HOOPFORM uses the camera to analyze your basketball shooting form on-device.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>HOOPFORM may use the microphone for optional voice feedback.</string>
+	<key>CFBundleName</key>
+	<string>HOOPFORM</string>
+	<key>CFBundleDisplayName</key>
+	<string>HOOPFORM</string>
+	<key>CFBundleIdentifier</key>
+	<string>com.hoopform.app</string>
+	<key>CFBundleShortVersionString</key>
+	<string>0.1.0</string>
+	<key>CFBundleVersion</key>
+	<string>1</string>
+	<key>UILaunchScreen</key>
+	<dict/>
+	<key>UISupportedInterfaceOrientations</key>
+	<array><string>UIInterfaceOrientationLandscapeRight</string>
+		<string>UIInterfaceOrientationPortrait</string></array>
+</dict>
+</plist>
