@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+<title>HOOPFORM 🏀 — Shooting Coach</title>
+<style>
+:root{--ink:#1c2430;--teal:#0ea5a0;--orange:#ff7043;--bg:#f4f7f9;--card:#fff;}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;font-family:-apple-system,'Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--ink)}
+.hdr{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;background:var(--card);
+  border-bottom:1px solid #e3e9ee;position:sticky;top:0;z-index:5}
+.hdr h1{margin:0;font-size:20px}.badge{font-size:11px;color:#fff;background:var(--teal);border-radius:20px;padding:4px 10px;font-weight:600}
+main{max-width:760px;margin:0 auto;padding:16px}
+.video-wrap{position:relative;background:#000;border-radius:16px;overflow:hidden;aspect-ratio:9/16;max-height:62vh;margin:0 auto}
+video{width:100%;height:100%;object-fit:cover;display:block}
+canvas{position:absolute;inset:0;width:100%;height:100%}
+#status{position:absolute;left:10px;bottom:10px;color:#fff;background:rgba(0,0,0,.55);padding:6px 10px;border-radius:10px;font-size:12px}
+.controls{display:flex;gap:10px;justify-content:center;margin:14px 0;flex-wrap:wrap}
+button{border:none;border-radius:14px;padding:13px 20px;font-size:16px;font-weight:700;cursor:pointer;color:#fff;background:var(--teal);box-shadow:0 3px 10px rgba(0,0,0,.15);transition:.12s}
+button:active{transform:translateY(2px)}
+button.orange{background:var(--orange)}
+button.gray{background:#9aa7b4}
+.tip{background:var(--card);border-left:5px solid var(--orange);border-radius:12px;padding:14px 16px;margin:10px 0;font-size:17px;font-weight:600;min-height:52px}
+.tip small{display:block;font-weight:400;color:#7a8a9a;font-size:12px;margin-top:4px}
+.metrics{background:var(--card);border-radius:12px;padding:12px;margin:10px 0}
+.metrics h3{margin:4px 0 8px;font-size:14px;color:#7a8a9a}
+.mrow{display:flex;justify-content:space-between;font-size:13px;padding:3px 0;border-bottom:1px dashed #eef1f4}
+.mrow:last-child{border-bottom:none}.mv{font-weight:700}
+.mv.ok{color:#0a8f4c}.mv.warn{color:var(--orange)}
+.foot{text-align:center;color:#9aa7b4;font-size:11px;padding:16px}
+#startScreen{text-align:center;padding:28px}
+.big{font-size:52px}
+</style>
+</head>
+<body>
+<div class="hdr"><h1>🏀 HOOPFORM</h1><span class="badge">ON-DEVICE • NO CLOUD</span></div>
+<main>
+  <div id="startScreen">
+    <div class="big">🏀</div>
+    <h2>Shooting Coach</h2>
+    <p style="color:#7a8a9a">Stand 3–5 m from your camera, side view, shooting with your <b>right</b> hand.<br>
+    HOOPFORM watches, computes your form, and coaches one fix at a time.</p>
+    <button id="startBtn">🎥 Start Camera</button>
+  </div>
+  <div id="live" hidden>
+    <div class="video-wrap">
+      <video id="cam" playsinline muted></video>
+      <canvas id="ov"></canvas>
+      <div id="status">starting…</div>
+    </div>
+    <div class="controls">
+      <button id="toggleBtn" class="gray">⏸ Pause</button>
+      <button id="resetBtn">↻ Reset streaks</button>
+    </div>
+    <div class="tip" id="tip">Keep shooting so I can analyze your form.</div>
+    <div class="metrics">
+      <h3>LAST SHOT FORM</h3>
+      <div class="mrow"><span>Release angle</span><span class="mv" id="m-ang">—</span></div>
+      <div class="mrow"><span>Elbow at set-point</span><span class="mv" id="m-elbow">—</span></div>
+      <div class="mrow"><span>Knee bend</span><span class="mv" id="m-knee">—</span></div>
+      <div class="mrow"><span>Release height</span><span class="mv" id="m-hgt">—</span></div>
+      <div class="mrow"><span>Alignment (shoulder/ankle)</span><span class="mv" id="m-aln">—</span></div>
+      <div class="mrow"><span>Follow-through</span><span class="mv" id="m-fol">—</span></div>
+    </div>
+  </div>
+  <div class="foot">HOOPFORM · MediaPipe (Apache-2.0) · original code, Apache-2.0 · no tracking</div>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14"></script>
+<script src="app.js"></script>
+</body>
+</html>
