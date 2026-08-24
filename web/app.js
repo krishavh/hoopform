@@ -5,6 +5,8 @@
  */
 'use strict';
 
+import { FilesetResolver, PoseLandmarker } from './mediapipe/vision_bundle.mjs';
+
 /* ---------- geometry ---------- */
 function angleAt(a, b, c){                  // interior angle ABC, vertex at b, in degrees
   const u=[a[0]-b[0], a[1]-b[1]], v=[c[0]-b[0], c[1]-b[1]];
@@ -37,18 +39,19 @@ const RULES=[                              // priority order; (id, ok, msg)
   ['follow',m=> m.follow_through,         "Hold your follow-through."],
 ];
 
-/* ---------- init mediapipe ---------- */
+/* ---------- init mediapipe (self-hosted, offline) ---------- */
 async function init(){
   try{
-    const vision=await FilesetResolver.forVisionTasks(
-      'https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14/wasm');
-    pose=await PoseLandmarker.createFromOptions(vision,{
-      baseOptions:{modelAssetPath:
-        'https://storage.googleapis.com/mediapipe-models/pose_landmarker/pose_landmarker_full/float16/1/pose_landmarker_full.task',
-        delegate:'GPU'},
-      runningMode:'VIDEO', numPoses:1, minPoseDetectionConfidence:0.5});
+    const wasmBase = (() => {
+      const b = new URL('./mediapipe/wasm', document.baseURI).href;
+      return b.endsWith('/') ? b : b + '/';
+    })();
+    const vision = await FilesetResolver.forVisionTasks(wasmBase);
+    pose = await PoseLandmarker.createFromOptions(vision, {
+      baseOptions: { modelAssetPath: './mediapipe/pose_landmarker_full.task', delegate: 'GPU' },
+      runningMode: 'VIDEO', numPoses: 1, minPoseDetectionConfidence: 0.5 });
     setStatus('pose ready ✓');
-  }catch(e){ setStatus('pose failed: '+e.message); }
+  } catch(e){ setStatus('pose failed: ' + e.message); }
 }
 
 /* ---------- camera ---------- */
